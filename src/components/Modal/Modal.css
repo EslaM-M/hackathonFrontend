@@ -1,0 +1,18 @@
+.Container{
+    position: absolute;
+    z-index: 10;
+    top:0;
+    left:0;
+    background: linear-gradient(rgba(1,1,1,0.5), rgba(1,1,1,0.6));
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center
+}
+
+.Modal{
+    width:40%;
+    padding:2%
+}

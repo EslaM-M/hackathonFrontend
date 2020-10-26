@@ -1,0 +1,6 @@
+[defaults]
+url = https://sentry.io/
+org = swvl
+project = planning-dashboard
+[auth]
+token=152d002b9ef74bedae7df16033d0f4eb3eb4c5a95c074cf5819008d51ccc9c1c

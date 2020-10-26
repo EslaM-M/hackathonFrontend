@@ -1,0 +1,15 @@
+{
+    "createdAt": "2019-12-18T10:12:36.546Z",
+    "expiry_date": "2019-12-19T10:12:36.545Z",
+    "id": "5df9fb9419b14d001b1c4f04",
+    "is_expired": false,
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWQ5Y2IxYjJiYmE2ODUwMDFhYWM1ZTcyIiwibmFtZSI6IkVzbGFtIE1Pc3RhZmEiLCJyb2xlIjoiZGFzaGJvYXJkIn0sImlhdCI6MTU3NTc5Nzk1N30.OkmNNlNeiKsVDUqLSNF165Y4-ch843s9n8BDt4ZDm_c",
+    "owner": "5d9cb1b2bba685001aac5e72",
+    "refresh_token": "d9e5046e-cf8d-4a72-9a58-4bc7706e94f6",
+    "role": "admin",
+    "token": "9ab54be4-e6f2-4826-ac7b-3a63dd259239",
+    "type": "dashboard",
+    "updatedAt": "2019-12-18T10:12:36.546Z",
+    "__v": 0,
+    "_id": "5df9fb9419b14d001b1c4f04"
+}

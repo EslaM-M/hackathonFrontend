@@ -1,0 +1,35 @@
+.Toolbar {
+  height: 6%;
+  width: 100%;
+  z-index: 2;
+  background-color: rgba(22, 39, 41, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  box-shadow: -5px 9px 20px -2px rgb(255, 255, 255,0.11);
+}
+.LogoContainer{
+  display: flex;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+.SwitchMap{
+  margin: 0px 20px;
+  color: white;
+}
+.Form_Control{
+  margin: 50px;
+  background-color: red;
+}
+.Select_Input{
+  color: red
+}
+
+.ActionButtons{
+  display: flex;
+  align-items: center;
+  margin: 0px 10px
+}

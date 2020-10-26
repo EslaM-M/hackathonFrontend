@@ -1,0 +1,5 @@
+{
+    "testFiles": "**/*.feature",
+    "video": false,
+    "baseUrl": "https://tag-api.asgard.swvl.io/dashboard/"
+}

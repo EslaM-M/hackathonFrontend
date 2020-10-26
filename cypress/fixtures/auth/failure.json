@@ -1,0 +1,6 @@
+{
+    "error": "Bad Request",
+    "message": "incorrect email or password",
+    "stack": "Error: incorrect email or password↵    at signIn (/usr/src/app/controllers/dashboard/auth.js:32:16)↵    at <anonymous>",
+    "statusCode": 400
+}

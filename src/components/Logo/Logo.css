@@ -1,0 +1,12 @@
+.Logo {
+  color: white;
+  height: 80%;
+}
+
+.Logo img {
+    height: 100%;
+  }
+.Logo img:hover {
+  cursor: pointer;
+}
+

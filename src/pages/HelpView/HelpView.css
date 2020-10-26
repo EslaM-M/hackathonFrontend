@@ -1,0 +1,16 @@
+.Container{
+display: flex;
+justify-content:center;
+align-items: center;
+}
+.mobileScreenContainer{
+    background-image: url("../../assets/images/iphone.png");  
+    width: 40%;
+    height: 800px;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+}
+.menuItemContainer{
+    width: 40%;
+}
