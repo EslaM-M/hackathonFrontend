@@ -22,7 +22,7 @@ instance.interceptors.request.use(config => {
     if (checkValidToken.isValid) {
         const token = checkValidToken.authData.token;
         config.baseURL += FRIES_API;
-        config.headers['x-test-user-id'] = '5d9cb1b2bba685001aac5e72';
+        config.headers.Authorization = `Bearer ${token}`;
         return config;
     }
     else {

@@ -1,16 +1,19 @@
-.Container{
-display: flex;
-justify-content:center;
-align-items: center;
+.Container {
+  display: flex;
+  justify-content: center;
 }
-.mobileScreenContainer{
-    background-image: url("../../assets/images/iphone.png");  
-    width: 40%;
-    height: 800px;
-    background-size: contain;
-    background-repeat: no-repeat;
-
+.mobileScreenContainer {
+  background-image: url("../../assets/images/iphone.png");
+  width: 40%;
+  height: 800px;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
-.menuItemContainer{
-    width: 40%;
+.margin10 {
+  margin: 10px !important;
+}
+.menuItemContainer {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
 }
