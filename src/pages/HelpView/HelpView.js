@@ -63,11 +63,15 @@ export default function HelpView () {
   const classes = useStyles()
   const [helpViews, setHelpViews] = React.useState([])
   const [viewComponent, setViewComponent] = React.useState('')
+  const [isLoading, setIsLoading] = React.useState(false)
+
   const handleChange = (event) => {
     setViewComponent(event.target.value)
   }
   const createNewViewComponent = (event) => {
     console.log(event.target)
+    setIsLoading(true);
+
     API.post('https://sxp-api.asgard.swvl.io/dashboard/help/create_single', {
       title: {
         en: 'I have a completely new COVID-19 issue'
@@ -90,17 +94,27 @@ export default function HelpView () {
     })
       .then((response) => {
         console.log(response)
+        setIsLoading(false);
+
       })
       .catch((err) => {
         console.log(err)
+        setIsLoading(false);
+
       })
   }
   const deactivateHelpView = (helpView) => {
+    setIsLoading(true);
+
     API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView._id}/deactivate`)
       .then((response) => {
+        setIsLoading(false);
+
         console.log(response)
       })
       .catch((err) => {
+        setIsLoading(false);
+
         console.log(err)
       })
   }
@@ -120,7 +134,7 @@ export default function HelpView () {
 
   useEffect(() => {
     readHelpView()
-  }, [helpViews.length])
+  }, [isLoading])
 
   const readHelpViewById = (id) => {
     API.get(`https://sxp-api.asgard.swvl.io/user/v2/help/${id}`)
