@@ -27,13 +27,13 @@ function App() {
 
   return (
     <>
-      {!isLoggedIn ? (
+      {/* {!isLoggedIn ? (
         <Auth />
-      ) : (
+      ) : ( */}
         <Layout>
           <Router />
         </Layout>
-      )}
+      {/* )} */}
     </>
   );
   

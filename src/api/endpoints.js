@@ -1,5 +1,6 @@
 const auth = {
-    sign_in: 'sign_in'
+    sign_in: 'sign_in',
+    
 }
 const endpoints = {
     ...auth

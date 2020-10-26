@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import Aux from '../../hoc/Aux'
 import cssClasses from './HelpView.css'
 import List from '@material-ui/core/List';
@@ -12,12 +12,27 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
+import API from '../../api'
+import endpoints from '../../api/endpoints'
+
+const firstListResponse = {
+  help_view_components: [
+    {
+      title: "I have an issue with COVID",
+      type: "ListItem",
+      meta_data: {
+        help_view: "firstId"
+      }
+    },
+    {
+      title: "I have an with the captain",
+      type: "ListItem",
+      meta_data: {
+        help_view: "secondId"
+      }
+    }
+
+  ]
 }
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -32,6 +47,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HelpView() {
   const classes = useStyles();
+  useEffect(() => {
+  API.get('https://sxp-api.asgard.swvl.io/user/v2/help')
+      .then(response => {
+        console.log(response)
+
+      })
+      .catch(err => {
+        console.log(err)
+
+      })
+  }, [])
   return (
     <Aux>
       <h1>
@@ -45,21 +71,23 @@ export default function HelpView() {
             margin: '100px'
           }}>
             <List dense={true}>
-              {generate(
-                <ListItem>
-                  <ListItemText
-                    primary="Captain Not Wearing the mask"
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>,
-              )}
+              {
+                firstListResponse.help_view_components.map(helpView => {
+                  return (<ListItem>
+                    <ListItemText
+                      primary={helpView.title}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>)
+                })
+              }
             </List>
           </div>
           <Tooltip title="Add" aria-label="add">
