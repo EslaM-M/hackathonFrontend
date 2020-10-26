@@ -7,6 +7,7 @@
   width: 40%;
   height: 800px;
   background-size: contain;
+  overflow-y: scroll;
   background-repeat: no-repeat;
 }
 .margin10 {

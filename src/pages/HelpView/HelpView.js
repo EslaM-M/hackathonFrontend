@@ -88,90 +88,96 @@ export default function HelpView() {
         }
       ]
     })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  const deactivateHelpView = (helpView) => {
+    API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView._id}/deactivate`)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  const readHelpView = ()=>{
+    API.get("https://sxp-api.asgard.swvl.io/dashboard/help/null_parents")
     .then((response) => {
-      console.log(response)
+      setHelpViews(response.data)
+      console.log(response.data);
     })
     .catch((err) => {
       console.log(err);
     });
-}
-const deactivateHelpView = (helpView) => {
-  console.log(helpView)
-  API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView.meta_data.help_view}/deactivate`)
-    .then((response) => {
-      console.log(response)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-useEffect(() => {
-  API.get("https://sxp-api.asgard.swvl.io/user/v2/help")
-    .then((response) => {
-      setHelpViews(response.data.help_view_components)
-      console.log(response.data.help_view_components);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}, []);
-return (
-  <Aux>
-    <h1>Help View Controller</h1>
-    <div className={cssClasses.Container}>
-      <div className={cssClasses.menuItemContainer}>
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Write slash '/' to select the component</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={viewComponent}
-            onChange={handleChange}
-          >
-            <MenuItem value={10}>List Item</MenuItem>
-            <MenuItem value={20}>Article</MenuItem>
-            <MenuItem value={30}>TextInput</MenuItem>
-            <MenuItem value={30}>Button</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField id="standard-basic" className={cssClasses.margin10} label="Standard" />
+  }
+  useEffect(() => {
+   readHelpView()
+  }, []);
 
-        <Button
-          variant="contained"
-          fullWidth={false}
-          color="primary"
-          onClick={createNewViewComponent}
-        >
-          Save
+  useEffect(() => {
+    readHelpView()
+   }, [helpViews.length]);
+  return (
+    <Aux>
+      <h1>Help View Controller</h1>
+      <div className={cssClasses.Container}>
+        <div className={cssClasses.menuItemContainer}>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Write slash '/' to select the component</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={viewComponent}
+              onChange={handleChange}
+            >
+              <MenuItem value={10}>List Item</MenuItem>
+              <MenuItem value={20}>Article</MenuItem>
+              <MenuItem value={30}>TextInput</MenuItem>
+              <MenuItem value={30}>Button</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField id="standard-basic" className={cssClasses.margin10} label="Standard" />
+
+          <Button
+            variant="contained"
+            fullWidth={false}
+            color="primary"
+            onClick={createNewViewComponent}
+          >
+            Save
           </Button>
-      </div>
-      <div className={cssClasses.mobileScreenContainer}>
-        <div
-          style={{
-            width: "45%",
-            margin: "100px",
-          }}
-        >
-          <List dense={true}>
-            {helpViews.map((helpView, index) => {
-              return (
-                <ListItem id={index}>
-                  <ListItemText primary={helpView.title} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon onClick={() => { deactivateHelpView(helpView) }} />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+        </div>
+        <div className={cssClasses.mobileScreenContainer}>
+          <div
+            style={{
+              width: "45%",
+              margin: "100px",
+            }}
+          >
+            <List dense={true}>
+              {helpViews.filter(e => e.is_active === true).map((helpView, index) => {
+                return (
+                  <ListItem id={index}>
+                    <ListItemText primary={helpView.title_i18n.en} />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete">
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon onClick={() => { deactivateHelpView(helpView) }} />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </div>
         </div>
       </div>
-    </div>
-  </Aux>
-);
+    </Aux>
+  );
 }
