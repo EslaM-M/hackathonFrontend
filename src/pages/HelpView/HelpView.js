@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function HelpView () {
+export default function HelpView() {
   const classes = useStyles()
   const [helpViews, setHelpViews] = React.useState([])
   const [viewComponent, setViewComponent] = React.useState('')
@@ -146,6 +146,38 @@ export default function HelpView () {
         console.log(err)
       })
   }
+  const getHelpViewComponent = (viewComponent) => {
+    switch (viewComponent.type) {
+      case 'ActionButton':
+        return <ListItem> <Button
+          variant='contained'
+          fullWidth={false}
+          color='primary'
+          onClick={createNewViewComponent}
+        >
+          {viewComponent.title}
+        </Button>
+        </ListItem>
+      case 'TextBox':
+        return <ListItem>
+          <TextField id='standard-basic' className={cssClasses.margin10} label='Standard' />
+        </ListItem>
+
+
+      default:
+        return <ListItem>
+          <ListItemText primary={viewComponent.title_i18n ? viewComponent.title_i18n.en : viewComponent.title} onClick={() => { readHelpViewById(viewComponent._id || viewComponent.meta_data.help_view) }} />
+          <ListItemSecondaryAction>
+            <IconButton edge='end' aria-label='delete'>
+              <EditIcon />
+            </IconButton>
+            <IconButton edge='end' aria-label='delete'>
+              <DeleteIcon onClick={() => { deactivateHelpView(viewComponent) }} />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+    }
+  }
   return (
     <Aux>
       <h1>Help View Controller</h1>
@@ -183,23 +215,18 @@ export default function HelpView () {
               margin: '100px'
             }}
           >
-            <List dense>
-              {helpViews.filter(e => e.is_active === true).map((helpView, index) => {
-                return (
-                  <ListItem id={index}>
-                    <ListItemText primary={helpView.title_i18n ? helpView.title_i18n.en : helpView.title} onClick={() => { readHelpViewById(helpView._id || helpView.meta_data.help_view) }} />
-                    <ListItemSecondaryAction>
-                      <IconButton edge='end' aria-label='delete'>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton edge='end' aria-label='delete'>
-                        <DeleteIcon onClick={() => { deactivateHelpView(helpView) }} />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )
-              })}
-            </List>
+            {
+
+              <List dense>
+                {
+                  helpViews.filter(e => e.is_active === true && e.type != "HiddenProperty").map((helpView, index) => {
+                    return (
+                      getHelpViewComponent(helpView)
+                    )
+                  })
+                }
+              </List>
+            }
           </div>
         </div>
       </div>
