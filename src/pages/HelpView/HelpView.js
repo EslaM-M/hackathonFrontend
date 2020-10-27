@@ -13,6 +13,7 @@ import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
 import Tooltip from '@material-ui/core/Tooltip'
 import API from '../../api'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import endpoints from '../../api/endpoints'
 import {
   Button,
@@ -37,10 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
+  },
+  root: {
+    width: 500,
+    '& > * + *': {
+      marginTop: theme.spacing(10),
+    },
   }
 }))
 
-export default function HelpView () {
+export default function HelpView() {
   const classes = useStyles()
   const [helpViews, setHelpViews] = React.useState([])
   const [viewComponentType, setViewComponentType] = React.useState('')
@@ -48,6 +55,8 @@ export default function HelpView () {
   const [lastParentId, setLastParentId] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
+  const [selectedTags, setSelectedTags] = React.useState(["general"])
+  const [tags, setTags] = React.useState(["general", "cairo", "past_ride", "kenya", "customer", "captain", "economy", "premium"])
   const handleChangeType = (event) => {
     setViewComponentType(event.target.value)
   }
@@ -128,7 +137,7 @@ export default function HelpView () {
 
     console.log('last parent id', lastParentId)
 
-    API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${lastParentId}`, jsonToSubmit)
+    API.post(`https://sxp-api.asgard.swvl.io/dashboard/help${lastParentId ? '/' + lastParentId : ''}`, jsonToSubmit)
       .then((response) => {
         console.log(response)
         setIsLoading(false)
@@ -185,12 +194,12 @@ export default function HelpView () {
         return <ListItem> <Button
           variant='contained'
           fullWidth={false}
-          style={{ backgroundColor: '#fc153b', color: 'white', width: '100px' }}
+          style={{ backgroundColor: '#fc153b', color: 'white', width: '250px' }}
           onClick={createNewViewComponent}
         >
           {viewComponent.title}
-                          </Button>
-               </ListItem>
+        </Button>
+        </ListItem>
       case 'TextBox':
         return <ListItem>
           <TextField id='standard-basic' className={cssClasses.margin10} label='Standard' />
@@ -223,8 +232,7 @@ export default function HelpView () {
             <InputLabel id='demo-simple-select-label'>Select the help element you want to add</InputLabel>
             <Select
               labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              // value={viewComponent}
+              id='demo-simple'
               onChange={(handleChangeType)}
             >
               <MenuItem name='type' value='ListItem'>List item</MenuItem>
@@ -234,6 +242,24 @@ export default function HelpView () {
           </FormControl>
           <TextField id='standard-basic' className={cssClasses.margin10} label='Element text' onChange={handleChangeTitle} />
 
+          <FormControl className={classes.formControl}>
+            <div className={[classes.root, cssClasses.margin10]} style={{ marginTop: '10px' }}>  <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={tags}
+              getOptionLabel={(option) => option}
+              defaultValue={selectedTags}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Select the required tags"
+                  placeholder="Tags"
+                />
+              )}
+            /></div>
+          </FormControl>
           <Button
             variant='contained'
             fullWidth={false}
@@ -265,6 +291,6 @@ export default function HelpView () {
           </div>
         </div>
       </div>
-    </Aux>
+    </Aux >
   )
 }
