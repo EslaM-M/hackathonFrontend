@@ -59,61 +59,115 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function HelpView() {
+export default function HelpView () {
   const classes = useStyles()
   const [helpViews, setHelpViews] = React.useState([])
-  const [viewComponent, setViewComponent] = React.useState('')
+  const [viewComponentType, setViewComponentType] = React.useState('')
+  const [viewComponentTitle, setViewComponentTitle] = React.useState('')
+  const [lastParentId, setLastParentId] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleChange = (event) => {
-    setViewComponent(event.target.value)
+  const handleChangeType = (event) => {
+    setViewComponentType(event.target.value)
+  }
+  const handleChangeTitle = (event) => {
+    setViewComponentTitle(event.target.value)
   }
   const createNewViewComponent = (event) => {
     console.log(event.target)
-    setIsLoading(true);
+    setIsLoading(true)
 
-    API.post('https://sxp-api.asgard.swvl.io/dashboard/help/create_single', {
-      title: {
-        en: 'I have a completely new COVID-19 issue'
-      },
-      type: 'article',
-      tags: [
-        'customer',
-        'past_trip'
-      ],
-      is_active: true,
-      help_components: [
+    let jsonToSubmit
+
+    if (viewComponentType === 'ListItem') {
+      jsonToSubmit = {
+        help_components: [{
+          type: 'ListItem',
+          title: {
+            en: viewComponentTitle
+          }
+        }]
+      }
+    } else if (viewComponentType === 'article') {
+      jsonToSubmit = {
+        help_components: [{
+          type: 'Description',
+          title: {
+            en: viewComponentTitle
+          }
+        }]
+      }
+    } else if (viewComponentType === 'form') {
+      jsonToSubmit = {
+        title: {
+          en: viewComponentTitle
+        },
+        type: 'form',
+        tags: [
+          'customer',
+          'past_trip'
+        ],
+        is_active: true,
+        parent: lastParentId,
+        help_components: [{
+          type: 'Description',
+          title: {
+            en: viewComponentTitle
+          }
+        },
         {
           title: {
-            en: "Phone numbers and email addresses are unique to each user. The same phone number or email address can't be used in more than one account. \nIf you already have an account but forgot the password, you can easily reset it by selecting I forgot my password while signing in. You will receive an email with the reset link where you can create a new password. Please note that this link expires within 24 hours.",
-            ar: 'رقم الهاتف والبريد الإلكتروني يجب أن يكونان فريدان لكل مستخدم، ولا يمكن استخدام نفس رقم الهاتف أو البريد الإلكتروني في أكثر من حساب.\nإذا كان لديك حساب بالفعل ولكنك نسيت كلمة المرور، فيمكنك إعادة تعيينه بسهولة عن طريق اختيار لقد نسيت كلمة المرور أثناء تسجيل الدخول. ستتلقى رسالة على بريدك الإلكتروني تحتوي على رابط لإعادة تعيين كلمة المرور، يمكنك إنشاء كلمة مرور جديدة من خلاله.  سوف تنتهي صلاحية هذا الرابط خلال ٢٤ ساعة.'
+            en: 'Details',
+            ar: 'التفاصيل'
           },
-          type: 'Description'
+          type: 'TextBox',
+          is_required: true,
+          custom_field_key: '5da5b316675f33001cecae48',
+          is_multiline: true
+        },
+        {
+          title: {
+            en: 'Submit',
+            ar: 'ارسال'
+          },
+          type: 'ActionButton',
+          action_type: 'submit'
         }
-      ]
-    })
+        ],
+        template_meta_data: {
+          type: 'question',
+          group: '5da5a675f330fa00526344d5',
+          priority: 'normal',
+          subject: {
+            en: viewComponentTitle
+          }
+        }
+      }
+    }
+
+    console.log('last parent id', lastParentId)
+
+    API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${lastParentId}`, jsonToSubmit)
       .then((response) => {
         console.log(response)
-        setIsLoading(false);
-
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err)
-        setIsLoading(false);
-
+        setIsLoading(false)
       })
   }
   const deactivateHelpView = (helpView) => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView._id}/deactivate`)
       .then((response) => {
-        setIsLoading(false);
+        setIsLoading(false)
 
         console.log(response)
       })
       .catch((err) => {
-        setIsLoading(false);
+        setIsLoading(false)
 
         console.log(err)
       })
@@ -140,7 +194,7 @@ export default function HelpView() {
     API.get(`https://sxp-api.asgard.swvl.io/user/v2/help/${id}`)
       .then((response) => {
         setHelpViews(response.data.help_view_components)
-        console.log(response.data)
+        setLastParentId(id)
       })
       .catch((err) => {
         console.log(err)
@@ -156,13 +210,12 @@ export default function HelpView() {
           onClick={createNewViewComponent}
         >
           {viewComponent.title}
-        </Button>
-        </ListItem>
+                          </Button>
+               </ListItem>
       case 'TextBox':
         return <ListItem>
           <TextField id='standard-basic' className={cssClasses.margin10} label='Standard' />
-        </ListItem>
-
+               </ListItem>
 
       default:
         return <ListItem>
@@ -175,7 +228,7 @@ export default function HelpView() {
               <DeleteIcon onClick={() => { deactivateHelpView(viewComponent) }} />
             </IconButton>
           </ListItemSecondaryAction>
-        </ListItem>
+               </ListItem>
     }
   }
   return (
@@ -184,20 +237,19 @@ export default function HelpView() {
       <div className={cssClasses.Container}>
         <div className={cssClasses.menuItemContainer}>
           <FormControl className={classes.formControl}>
-            <InputLabel id='demo-simple-select-label'>Write slash '/' to select the component</InputLabel>
+            <InputLabel id='demo-simple-select-label'>Select the help element you want to add</InputLabel>
             <Select
               labelId='demo-simple-select-label'
               id='demo-simple-select'
-              value={viewComponent}
-              onChange={handleChange}
+              // value={viewComponent}
+              onChange={(handleChangeType)}
             >
-              <MenuItem value={10}>List Item</MenuItem>
-              <MenuItem value={20}>Article</MenuItem>
-              <MenuItem value={30}>TextInput</MenuItem>
-              <MenuItem value={30}>Button</MenuItem>
+              <MenuItem name='type' value='ListItem'>List item</MenuItem>
+              <MenuItem name='type' value='article'>Article</MenuItem>
+              <MenuItem name='type' value='form'>Form</MenuItem>
             </Select>
           </FormControl>
-          <TextField id='standard-basic' className={cssClasses.margin10} label='Standard' />
+          <TextField id='standard-basic' className={cssClasses.margin10} label='Element text' onChange={handleChangeTitle} />
 
           <Button
             variant='contained'
@@ -219,7 +271,7 @@ export default function HelpView() {
 
               <List dense>
                 {
-                  helpViews.filter(e => e.is_active === true && e.type != "HiddenProperty").map((helpView, index) => {
+                  helpViews.filter(e => e.is_active === true && !['HiddenProperty'].includes(e.type)).map((helpView, index) => {
                     return (
                       getHelpViewComponent(helpView)
                     )
