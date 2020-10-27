@@ -2,10 +2,10 @@
   height: 6%;
   width: 100%;
   z-index: 2;
-  background-color: rgba(22, 39, 41, 0.8);
   display: flex;
   flex-direction: row;
   align-items: center;
+  background: #fc153b !important;
   justify-content: space-between;
   padding: 10px 10px;
   box-shadow: -5px 9px 20px -2px rgb(255, 255, 255,0.11);

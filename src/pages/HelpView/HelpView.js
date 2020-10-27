@@ -109,12 +109,10 @@ export default function HelpView() {
     API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView._id}/deactivate`)
       .then((response) => {
         setIsLoading(false);
-
         console.log(response)
       })
       .catch((err) => {
         setIsLoading(false);
-
         console.log(err)
       })
   }
@@ -152,7 +150,7 @@ export default function HelpView() {
         return <ListItem> <Button
           variant='contained'
           fullWidth={false}
-          color='primary'
+          style={{ backgroundColor: '#fc153b', color: 'white', width: '100px' }}
           onClick={createNewViewComponent}
         >
           {viewComponent.title}
@@ -162,20 +160,23 @@ export default function HelpView() {
         return <ListItem>
           <TextField id='standard-basic' className={cssClasses.margin10} label='Standard' />
         </ListItem>
-
-
       default:
-        return <ListItem>
-          <ListItemText primary={viewComponent.title_i18n ? viewComponent.title_i18n.en : viewComponent.title} onClick={() => { readHelpViewById(viewComponent._id || viewComponent.meta_data.help_view) }} />
-          <ListItemSecondaryAction>
-            <IconButton edge='end' aria-label='delete'>
-              <EditIcon />
-            </IconButton>
-            <IconButton edge='end' aria-label='delete'>
-              <DeleteIcon onClick={() => { deactivateHelpView(viewComponent) }} />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
+        return (
+          <>
+            <ListItem>
+              <ListItemText primary={viewComponent.title_i18n ? viewComponent.title_i18n.en : viewComponent.title} onClick={() => { readHelpViewById(viewComponent._id || viewComponent.meta_data.help_view) }} />
+            </ListItem>
+            <ListItem style={{ margin: '20px 0px' }} divider={true}>
+              <ListItemSecondaryAction style={{ top: '-150%' }}>
+                <IconButton edge='end' aria-label='delete'>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge='end' aria-label='delete'>
+                  <DeleteIcon onClick={() => { deactivateHelpView(viewComponent) }} />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </>)
     }
   }
   return (
@@ -202,7 +203,7 @@ export default function HelpView() {
           <Button
             variant='contained'
             fullWidth={false}
-            color='primary'
+            style={{ backgroundColor: '#fc153b', color: 'white', width: '100px' }}
             onClick={createNewViewComponent}
           >
             Save

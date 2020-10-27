@@ -12,7 +12,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { bindActionCreators } from "redux";
 import { Toolbar, Tooltip, IconButton } from "@material-ui/core";
 import { connect } from "react-redux";
-import {logout} from "../../store/actions"
+import { logout } from "../../store/actions"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -20,7 +20,7 @@ function TabPanel(props) {
     <Typography
       component="div"
       role="tabpanel"
-      style={{marginTop:'50px'}}
+      style={{ marginTop: '50px' }}
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -40,10 +40,14 @@ TabPanel.propTypes = {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    fontSize:'100px',
+    fontWeight:'bold'
   },
   toolbar: {
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    backgroundColor: '#fc153b !important',
+    fontSize:'100px !important'
   }
 }));
 
@@ -92,7 +96,7 @@ function SimpleTabs(props) {
   );
 }
 const mapStateToProps = state => ({
-  
+
 });
 
 const mapDispatchToProps = dispatch =>
@@ -101,4 +105,4 @@ const mapDispatchToProps = dispatch =>
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(SimpleTabs)
-  );
+);

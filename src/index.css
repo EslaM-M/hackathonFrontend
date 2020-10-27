@@ -26,3 +26,8 @@ code {
   border-radius: 2px;
   outline: 1px solid slategrey;
 }
+
+.MuiTab-wrapper {
+  font-weight: bold;
+  font-size: 25px;
+}

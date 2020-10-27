@@ -8,3 +8,8 @@ body {
   font-family: "Montserrat", sans-serif;
   min-height: 100%;
 }
+
+.MuiTab-wrapper {
+  font-weight: bold;
+  font-size: 25px;
+}
