@@ -62,21 +62,57 @@ export default function HelpView () {
 
     if (viewComponentType === 'ListItem') {
       jsonToSubmit = {
+        title: {
+          en: viewComponentTitle
+        },
+        type: 'list',
+        tags: [
+          'customer',
+          'past_trip'
+        ],
+        is_active: true,
+        parent: lastParentId,
         help_components: [{
           type: 'ListItem',
           title: {
             en: viewComponentTitle
           }
-        }]
+        }],
+        template_meta_data: {
+          type: 'question',
+          group: '5da5a675f330fa00526344d5',
+          priority: 'normal',
+          subject: {
+            en: viewComponentTitle
+          }
+        }
       }
     } else if (viewComponentType === 'article') {
       jsonToSubmit = {
+        title: {
+          en: viewComponentTitle
+        },
+        type: 'article',
+        tags: [
+          'customer',
+          'past_trip'
+        ],
+        is_active: true,
+        parent: lastParentId,
         help_components: [{
           type: 'Description',
           title: {
             en: viewComponentTitle
           }
-        }]
+        }],
+        template_meta_data: {
+          type: 'question',
+          group: '5da5a675f330fa00526344d5',
+          priority: 'normal',
+          subject: {
+            en: viewComponentTitle
+          }
+        }
       }
     } else if (viewComponentType === 'form') {
       jsonToSubmit = {
@@ -128,7 +164,7 @@ export default function HelpView () {
 
     console.log('last parent id', lastParentId)
 
-    API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${lastParentId}`, jsonToSubmit)
+    API.post('https://sxp-api.asgard.swvl.io/dashboard/help/create_single', jsonToSubmit)
       .then((response) => {
         console.log(response)
         setIsLoading(false)
@@ -143,11 +179,11 @@ export default function HelpView () {
 
     API.post(`https://sxp-api.asgard.swvl.io/dashboard/help/${helpView._id}/deactivate`)
       .then((response) => {
-        setIsLoading(false);
+        setIsLoading(false)
         console.log(response)
       })
       .catch((err) => {
-        setIsLoading(false);
+        setIsLoading(false)
         console.log(err)
       })
   }
@@ -201,7 +237,7 @@ export default function HelpView () {
             <ListItem>
               <ListItemText primary={viewComponent.title_i18n ? viewComponent.title_i18n.en : viewComponent.title} onClick={() => { readHelpViewById(viewComponent._id || viewComponent.meta_data.help_view) }} />
             </ListItem>
-            <ListItem style={{ margin: '20px 0px' }} divider={true}>
+            <ListItem style={{ margin: '20px 0px' }} divider>
               <ListItemSecondaryAction style={{ top: '-150%' }}>
                 <IconButton edge='end' aria-label='delete'>
                   <EditIcon />
